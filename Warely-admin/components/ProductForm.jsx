@@ -9,28 +9,29 @@ const ProductForm = ({ fetchProducts, editingProduct, setEditingProduct }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // ✅ Fixed: Uses relative URL for proxy
+  const API_BASE = '/api';
+
   // Populate form when editing a product
   useEffect(() => {
     if (editingProduct) {
       setName(editingProduct.name || '');
       setPrice(editingProduct.price || '');
       setDescription(editingProduct.description || '');
-      setImageFile(null); // Reset image file selection
+      setImageFile(null); // Reset image selection
     } else {
-      // Clear form for new product
       setName('');
       setPrice('');
       setDescription('');
       setImageFile(null);
     }
-    setError(''); // Clear any previous errors
+    setError('');
   }, [editingProduct]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    // Validation
     if (!name || !price) {
       setError("Name and Price are required.");
       return;
@@ -41,18 +42,14 @@ const ProductForm = ({ fetchProducts, editingProduct, setEditingProduct }) => {
       return;
     }
 
-    // Prepare form data
     const formData = new FormData();
     formData.append('name', name);
     formData.append('price', price);
     formData.append('description', description || '');
-    
-    // Only append image if a new file is selected
     if (imageFile) {
       formData.append('image', imageFile);
     }
 
-    // FIXED: Add _method=PUT for Laravel to handle updates properly with FormData
     if (editingProduct) {
       formData.append('_method', 'PUT');
     }
@@ -62,32 +59,22 @@ const ProductForm = ({ fetchProducts, editingProduct, setEditingProduct }) => {
       let response;
 
       if (editingProduct) {
-        // FIXED: Update existing product using POST with _method=PUT (Laravel standard for file uploads)
         response = await axios.post(
-          `http://127.0.0.1:8000/api/products/${editingProduct.id}`,
+          `${API_BASE}/products/${editingProduct.id}`,
           formData,
-          { 
-            headers: { 
-              'Content-Type': 'multipart/form-data' 
-            } 
-          }
+          { headers: { 'Content-Type': 'multipart/form-data' } }
         );
         console.log('Product updated successfully:', response.data);
       } else {
-        // Create new product (unchanged - this was working)
         response = await axios.post(
-          'http://127.0.0.1:8000/api/products',
+          `${API_BASE}/products`,
           formData,
-          { 
-            headers: { 
-              'Content-Type': 'multipart/form-data' 
-            } 
-          }
+          { headers: { 'Content-Type': 'multipart/form-data' } }
         );
         console.log('Product created successfully:', response.data);
       }
 
-      // Success - refresh products and reset form
+      // Refresh product list and reset form
       fetchProducts();
       setEditingProduct(null);
       setName('');
@@ -95,11 +82,8 @@ const ProductForm = ({ fetchProducts, editingProduct, setEditingProduct }) => {
       setDescription('');
       setImageFile(null);
       setError('');
-
     } catch (err) {
       console.error('Operation error details:', err);
-
-      // Error handling (unchanged - this was working)
       if (err.response) {
         const status = err.response.status;
         const message =
@@ -108,17 +92,11 @@ const ProductForm = ({ fetchProducts, editingProduct, setEditingProduct }) => {
           JSON.stringify(err.response.data) ||
           'Unknown server error';
 
-        if (status === 413) {
-          setError("File too large. Please choose a smaller image.");
-        } else if (status === 422) {
-          setError(`Validation error: ${message}`);
-        } else if (status === 404) {
-          setError("API endpoint not found. Check backend.");
-        } else if (status === 500) {
-          setError("Server error. Check backend logs.");
-        } else {
-          setError(`Error ${status}: ${message}`);
-        }
+        if (status === 413) setError("File too large. Please choose a smaller image.");
+        else if (status === 422) setError(`Validation error: ${message}`);
+        else if (status === 404) setError("API endpoint not found. Check backend.");
+        else if (status === 500) setError("Server error. Check backend logs.");
+        else setError(`Error ${status}: ${message}`);
       } else if (err.request) {
         setError("Cannot connect to server. Make sure backend is running.");
       } else {
@@ -217,9 +195,7 @@ const ProductForm = ({ fetchProducts, editingProduct, setEditingProduct }) => {
           onDrop={(e) => {
             e.preventDefault();
             const files = e.dataTransfer.files;
-            if (files.length > 0) {
-              setImageFile(files[0]);
-            }
+            if (files.length > 0) setImageFile(files[0]);
           }}
         >
           <input
@@ -228,9 +204,7 @@ const ProductForm = ({ fetchProducts, editingProduct, setEditingProduct }) => {
             accept="image/*"
             onChange={(e) => {
               const files = e.target.files;
-              if (files.length > 0) {
-                setImageFile(files[0]);
-              }
+              if (files.length > 0) setImageFile(files[0]);
             }}
             style={{ display: 'none' }}
           />
