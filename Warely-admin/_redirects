@@ -1,0 +1,6 @@
+/api/*  http://13.62.45.220:8000/api/:splat  200
+/images/*  http://13.62.45.220:8000/images/:splat  200
+/uploads/*  http://13.62.45.220:8000/uploads/:splat  200
+/storage/*  http://13.62.45.220:8000/storage/:splat  200
+/static/*  http://13.62.45.220:8000/static/:splat  200
+/*    /index.html   200
