@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 // API Configuration - Different URLs for development vs production
 const API_BASE_URL = process.env.NODE_ENV === 'production' 
   ? '/api'  // Netlify proxy URL for production
-  : 'http://13.62.45.220:8000/api';  // Direct EC2 URL for development
+  : 'http://13.62.45.220/api';  // Direct EC2 URL for development
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -167,8 +167,8 @@ const ProductList = () => {
                   if (!imageUrl) return '/placeholder-image.jpg';
                   
                   // If in production (Netlify), convert EC2 URLs to use proxy
-                  if (process.env.NODE_ENV === 'production' && imageUrl.startsWith('http://13.62.45.220:8000')) {
-                    return imageUrl.replace('http://13.62.45.220:8000', '');
+                  if (process.env.NODE_ENV === 'production' && imageUrl.startsWith('http://13.62.45.220')) {
+                    return imageUrl.replace('http://13.62.45.220', '');
                   }
                   
                   return imageUrl;
@@ -246,3 +246,4 @@ const ProductList = () => {
 };
 
 export default ProductList;
+
