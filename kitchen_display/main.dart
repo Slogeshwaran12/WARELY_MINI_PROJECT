@@ -8,13 +8,13 @@ void main() {
 
 // Config class
 class Config {
-  static const String baseUrl = "http://10.0.2.2:8000/api"; // Android emulator
+  static const String baseUrl = "http://13.62.45.220:8000/api"; // EC2 public IP
   static const String ordersEndpoint = "/orders";
 }
 
 // ApiService class
 class ApiService {
-  static const String baseUrl = "http://10.0.2.2:8000/api";
+  static const String baseUrl = "http://13.62.45.220:8000/api"; // EC2 public IP
 
   static Future<List<dynamic>> getOrders() async {
     final response = await http.get(Uri.parse('$baseUrl/orders'));
@@ -79,7 +79,6 @@ class _OrdersPageState extends State<OrdersPage> {
     try {
       final data = await ApiService.getOrders();
       setState(() {
-        // Filter out completed orders
         orders = data.where((order) => order['status'] != 'completed').toList();
         loading = false;
       });
@@ -280,4 +279,3 @@ class _OrdersPageState extends State<OrdersPage> {
     }
   }
 }
-
