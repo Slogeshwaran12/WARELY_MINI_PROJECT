@@ -29,7 +29,7 @@ class QRApp extends StatelessWidget {
 class QRPage extends StatelessWidget {
   const QRPage({super.key});
 
-  final String qrData = "https://logeshwarely.netlify.app/";
+  final String qrData = "https://warelymenu.netlify.app/";
 
   @override
   Widget build(BuildContext context) {
@@ -98,3 +98,4 @@ class QRPage extends StatelessWidget {
     );
   }
 }
+
