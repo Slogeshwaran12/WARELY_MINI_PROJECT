@@ -1,5 +1,5 @@
 name: customer_ordering
-description: Flutter customer ordering app using Laravel backend
+description: Flutter app showing a QR code for Netlify link
 version: 1.0.0+1
 
 environment:
@@ -8,8 +8,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ^1.5.0
-  provider: ^6.0.5
+  qr_flutter: ^4.0.0
+  marquee: ^2.2.3
 
 dev_dependencies:
   flutter_test:
