@@ -5,7 +5,7 @@ import axios from 'axios';
 // API Configuration - Different URLs for development vs production
 const API_BASE_URL = process.env.NODE_ENV === 'production' 
   ? '/api'  // Netlify proxy URL for production
-  : 'http://13.62.45.220:8000/api';  // Direct EC2 URL for development
+  : 'http://13.62.45.220/api';  // Direct EC2 URL for development
 
 const CartPage = () => {
   const location = useLocation();
@@ -382,3 +382,4 @@ const CartPage = () => {
 };
 
 export default CartPage;
+
