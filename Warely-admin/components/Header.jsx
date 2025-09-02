@@ -48,6 +48,20 @@ const Header = ({ activePage }) => {
         >
           Orders
         </button>
+        <button
+          style={{
+            padding: '5px 15px',
+            borderRadius: '5px',
+            border: 'none',
+            cursor: 'pointer',
+            fontWeight: activePage === 'kitchen' ? 'bold' : 'normal',
+            background: activePage === 'kitchen' ? '#ff0' : '#555',
+            color: activePage === 'kitchen' ? '#000' : '#fff'
+          }}
+          onClick={() => navigate('/kitchen')}
+        >
+          Kitchen
+        </button>
       </div>
     </header>
   );
